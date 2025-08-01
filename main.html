@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Amizade Perpétua - Assinatura Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff3e78;
+            --primary-light: #ff84a9;
+            --primary-dark: #d01e58;
+            --secondary: #4f0fff;
+            --secondary-light: #8661ff;
+            --secondary-dark: #3700d6;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --light: #f7f7ff;
+            --success: #00ff88;
+            --success-dark: #00cc6a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(79, 15, 255, 0.03) 0%, rgba(10, 10, 26, 0) 70%);
+            animation: pulse 15s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0.7;
+                transform: scale(1.5);
+            }
+        }
+        
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3e78'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") no-repeat center center;
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-light);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .glass-panel:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .contract-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .contract-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+        }
+        
+        .contract-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--light);
+            margin: 0;
+        }
+        
+        .contract-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--success);
+            position: relative;
+        }
+        
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(0, 255, 136, 0.2);
+            animation: pulse-status 2s infinite;
+        }
+        
+        @keyframes pulse-status {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            70% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--light);
+        }
+        
+        .contract-preview {
+            padding: 20px 30px 40px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .contract-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to top, rgba(10, 10, 26, 0.8), transparent);
+            pointer-events: none;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        .contract-preview::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .contract-preview::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .contract-preview::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        
+        .contract-preview::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        .signature-section {
+            margin-bottom: 50px;
+        }
+        
+        .signature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+        }
+        
+        .signatures-container {
+            display: flex;
+            padding: 30px;
+            gap: 40px;
+            justify-content: space-around;
+        }
+        
+        .signature-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            max-width: 400px;
+        }
+        
+        .signature-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        .avatar-mateus {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .avatar-yasmim {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+        
+        .signature-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+        
+        .signature-role {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .signature-display {
+            width: 100%;
+            height: 80px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+        
+        .signature-image {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--primary);
+            transform: rotate(-5deg);
+            text-shadow: 0 0 5px rgba(255, 62, 120, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .signature-status-badge {
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-signed {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .status-pending {
+            background: rgba(255, 62, 120, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(255, 62, 120, 0.3);
+        }
+        
+        .signing-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .signing-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .option-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .option-btn:hover, .option-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .option-btn.active {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #signatureCanvas {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            cursor: crosshair;
+        }
+        
+        #typeSignature {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            padding: 15px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--primary);
+            resize: none;
+            display: none;
+            text-align: center;
+        }
+        
+        .signature-controls {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .control-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .btn-clear {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-sign {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-sign:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .finalize-section {
+            display: none;
+            margin-top: 50px;
+        }
+        
+        .finalize-content {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .official-seal {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+        
+        .seal-image {
+            width: 100px;
+            height: 100px;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%23ff3e78' stroke-width='2'/><circle cx='50' cy='50' r='35' fill='none' stroke='%234f0fff' stroke-width='2'/><polygon points='50,5 52.4,15.4 57.7,7.3 57.4,17.9 65.4,12.1 62.5,22.3 72.4,19.1 67.1,27.9 78.2,27.6 70.8,34.6 82.3,37.1 73.4,42.1 86.1,47.4 76.1,50 88.9,57.9 78.1,57.9 89.4,68.1 78.4,65.5 87.1,77.5 76.6,72.5 82,86 72.5,78.8 74.4,93.1 66.1,84 65,98.3 58.6,87.6 54.2,100 50,88 45.8,100 41.4,87.6 35,98.3 34,84 25.6,93.1 27.5,78.8 18,86 23.4,72.5 12.9,77.5 21.6,65.5 10.6,68.1 21.9,57.9 11.1,57.9 23.9,50 13.9,47.4 26.6,42.1 17.7,37.1 29.2,34.6 21.8,27.6 32.9,27.9 27.6,19.1 37.5,22.3 34.6,12.1 42.6,17.9 42.3,7.3 47.6,15.4' stroke='%23ff3e78' fill='none' stroke-width='1'/><text x='50' y='45' text-anchor='middle' fill='%234f0fff' font-family='Arial' font-size='8'>AMIZADE</text><text x='50' y='55' text-anchor='middle' fill='%234f0fff' font-family='Arial' font-size='8'>PERPÉTUA</text><text x='50' y='65' text-anchor='middle' fill='%234f0fff' font-family='Arial' font-size='8'>2025</text></svg>") no-repeat center center;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .seal-text {
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--light);
+            max-width: 300px;
+        }
+        
+        .seal-text strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .process-number {
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-family: monospace;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .btn-finalize {
+            background: linear-gradient(45deg, var(--success), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            margin-top: 30px;
+            display: inline-block;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .btn-finalize:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes glow {
+            0% {
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                box-shadow: 0 5px 30px rgba(0, 255, 136, 0.4);
+            }
+        }
+        
+        #completionMessage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .completion-content {
+            text-align: center;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            animation: appear 0.5s ease-out;
+        }
+        
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .completion-content h1 {
+            margin-bottom: 30px;
+        }
+        
+        .completion-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0.8;
+        }
+        
+        .contract-content {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--light);
+        }
+        
+        .contract-content h2 {
+            font-family: 'Times New Roman', Times, serif;
+            color: var(--light);
+            font-size: 1.1rem;
+            margin: 15px 0 10px;
+            text-transform: uppercase;
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .signatures-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .signature-card {
+                width: 100%;
+            }
+        }
+        
+        .saved-signature-canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="hearts-container"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>Contrato de Amizade Perpétua</h1>
+            <h2>Assinatura Digital Oficial</h2>
+        </header>
+        
+        <section class="contract-section">
+            <div class="glass-panel">
+                <div class="contract-header">
+                    <h2 class="contract-title">Documento Oficial</h2>
+                    <div class="contract-status">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Aguardando assinatura final</span>
+                    </div>
+                </div>
+                
+                <div class="contract-preview">
+                    <div class="contract-content">
+                        <h2>Contrato de Amizade Perpétua e Irrevogável</h2>
+                        <p><strong>INSTRUMENTO PARTICULAR DE COMPROMISSO DE MELHOR AMIZADE CONFORME A LEI FEDERAL Nº 4.287/25 DE VÍNCULOS AFETIVOS INDISSOLÚVEIS</strong></p>
+                        
+                        <p>Pelo presente instrumento particular, regido pela Lei da Amizade Verdadeira (Lei Federal nº 4.287/25) e pelo Código Civil Brasileiro em seus artigos que dispõem sobre relações interpessoais não-familiares (Art. 927-A ao 927-Z, incluídos pela Lei Complementar nº 183/24), as partes abaixo qualificadas firmam entre si o presente CONTRATO DE AMIZADE PERPÉTUA E IRREVOGÁVEL, mediante as seguintes cláusulas e condições:</p>
+                        
+                        <h2>Partes Contratantes</h2>
+                        <p><strong>PARTE PRIMEIRA:</strong> <strong>MATEUS</strong>, doravante denominado MELHOR AMIGO, pessoa natural dotada de plena capacidade afetiva conforme Art. 3º da Lei de Vínculos Emocionais.</p>
+                        
+                        <p><strong>PARTE SEGUNDA:</strong> <strong>YASMIM</strong>, doravante denominada MELHOR AMIGA, igualmente dotada de plena capacidade afetiva conforme mesma legislação supracitada.</p>
+                        
+                        <h2>Considerandos</h2>
+                        <p>CONSIDERANDO que as partes, por livre e espontânea vontade, reconhecem o valor inestimável da amizade entre si;</p>
+                        
+                        <p>CONSIDERANDO que o Instituto Brasileiro de Relações Interpessoais (IBRI) reconhece como vínculo de amizade verdadeira aquele que perdura por mais de 100 (cem) dias consecutivos;</p>
+                        
+                        <p>CONSIDERANDO a necessidade de formalização do vínculo afetivo para garantia das obrigações recíprocas;</p>
+                        
+                        <p>As partes RESOLVEM celebrar o presente CONTRATO DE AMIZADE PERPÉTUA, mediante as seguintes cláusulas e condições:</p>
+                        
+                        <h2>Cláusula Primeira - Do Objeto</h2>
+                        <p>1.1. O presente contrato tem por objeto a formalização e eternização do vínculo de amizade entre as partes contratantes, com estabelecimento de direitos e deveres recíprocos, conforme Art. 14 da Lei Federal nº 4.287/25.</p>
+                        
+                        <p>1.2. A amizade ora formalizada é classificada como "MELHOR AMIZADE DE GRAU MÁXIMO", nos termos do Art. 17, §3º da referida lei, sendo considerada perpétua e irrevogável.</p>
+                        
+                        <h2>Cláusula Segunda - Dos Princípios Fundamentais</h2>
+                        <p>2.1. São princípios basilares do presente contrato, conforme a Resolução nº 42/2024 do Conselho Nacional de Amizades Verdadeiras:</p>
+                        <p>a) Lealdade absoluta;<br>
+                        b) Confidencialidade plena;<br>
+                        c) Suporte emocional incondicional;<br>
+                        d) Honestidade temperada com tato;<br>
+                        e) Disponibilidade prioritária;<br>
+                        f) Reciprocidade afetiva.</p>
+                        
+                        <h2>Cláusula Terceira - Das Obrigações Recíprocas</h2>
+                        <p>3.1. <strong>OBRIGAÇÕES DE PERMANÊNCIA DO VÍNCULO:</strong> Ambas as partes comprometem-se a manter o vínculo de amizade de forma perpétua e irrevogável, conforme Art. 23 da Lei Federal nº 4.287/25, não podendo jamais declarar o término da amizade, sob qualquer circunstância, salvo nas hipóteses previstas no Art. 31-A da mesma lei (traição de confiança com dolo específico).</p>
+                        
+                        <p>3.2. <strong>OBRIGAÇÕES AFETIVAS:</strong> As partes se comprometem a nutrir sentimentos positivos uma pela outra, incluindo, mas não se limitando a:</p>
+                        <p>a) Amor platônico na modalidade amizade;<br>
+                        b) Admiração genuína;<br>
+                        c) Empatia proativa;<br>
+                        d) Tolerância às peculiaridades de personalidade.</p>
+                        
+                        <p>3.3. <strong>OBRIGAÇÕES DE PROTEÇÃO:</strong> Cada parte obriga-se a proteger a outra em todas as circunstâncias, incluindo:</p>
+                        <p>a) Defesa da honra e da imagem perante terceiros;<br>
+                        b) Intervenção em situações de perigo iminente;<br>
+                        c) Acolhimento em momentos de vulnerabilidade emocional;<br>
+                        d) Orientação preventiva sobre riscos potenciais.</p>
+                        
+                        <p>3.8. <strong>OBRIGAÇÕES DE COMUNICAÇÃO AFETIVA:</strong> Conforme disposto na Portaria nº 28/2025 do Ministério das Relações Interpessoais:</p>
+                        <p>a) Ambas as partes devem manter o mesmo nível de carinho e atenção tanto em comunicações por mensagem escrita quanto em comunicações por voz;<br>
+                        b) É vedada a demonstração diferenciada de afeto baseada no meio de comunicação utilizado;<br>
+                        c) Toda forma de comunicação deve ser marcada por expressões genuínas de apreço e consideração.</p>
+                        
+                        <p>3.9. <strong>OBRIGAÇÕES DE RECIPROCIDADE EM CHAMADAS:</strong> Em conformidade com o Artigo 89-B da Lei de Comunicações Interpessoais:</p>
+                        <p>a) Ambas as partes devem solicitar chamadas de voz e/ou vídeo de forma equilibrada;<br>
+                        b) É expressamente proibido que apenas uma das partes seja sempre a responsável por iniciar os pedidos de chamadas;<br>
+                        c) As solicitações de chamadas devem ocorrer em intervalo máximo de 7 (sete) dias por cada uma das partes, salvo impedimentos justificáveis.</p>
+                        
+                        <p>3.10. <strong>RESTRIÇÕES TEMPORAIS AO BULLYING AMIGÁVEL:</strong> Em conformidade com a Diretriz de Proteção ao Bem-Estar Emocional nº 47/2024:</p>
+                        <p>a) Fica terminantemente proibida qualquer forma de bullying, provocação, ou expressões jocosas que possam ser interpretadas como depreciativas após as 18:00 horas;<br>
+                        b) Após o horário estipulado na alínea anterior, a comunicação deve restringir-se exclusivamente a elogios, palavras de incentivo e manifestações positivas de afeto;<br>
+                        c) O descumprimento desta cláusula implica na obrigação de proferir 5 (cinco) elogios consecutivos como medida compensatória imediata.</p>
+                        
+                        <h2>Cláusula Nona - Dos Compromissos Especiais</h2>
+                        <p>9.1. <strong>OBRIGAÇÃO DE ENCONTRO PRESENCIAL:</strong> Em conformidade com o Art. 115 da Lei de Proximidade Afetiva:</p>
+                        <p>a) As partes comprometem-se a realizar ao menos um encontro presencial no prazo máximo de 3 (três) anos a contar da data de assinatura deste contrato;<br>
+                        b) O não cumprimento desta cláusula implicará em multa afetiva, na forma de realização de 5 (cinco) gestos extraordinários de amizade à escolha da parte prejudicada;<br>
+                        c) Circunstâncias de força maior, devidamente comprovadas, poderão estender o prazo em até 6 (seis) meses adicionais.</p>
+                        
+                        <p>9.2. <strong>PROIBIÇÃO DE INTERFERÊNCIA DE TERCEIROS:</strong> Conforme a Resolução nº 73/2024 do Conselho Nacional de Amizades Verdadeiras:</p>
+                        <p>a) Em caso de início de relacionamento amoroso por qualquer das partes, havendo qualquer objeção do(a) parceiro(a) romântico(a) em relação à amizade objeto deste contrato, a parte envolvida no relacionamento amoroso fica obrigada a:</p>
+                        <p>i. Comunicar imediatamente à outra parte contratante sobre a situação;<br>
+                        ii. Promover diálogo franco e aberto sobre o ocorrido;<br>
+                        iii. Buscar soluções que preservem a integridade da amizade;<br>
+                        iv. Não permitir alterações súbitas ou injustificadas no padrão de interação da amizade.</p>
+                        
+                        <p>9.3. <strong>VEDAÇÃO ABSOLUTA DE BLOQUEIO DIGITAL:</strong> Em conformidade com o Art. 147-A do Código de Conduta Digital entre Amigos:</p>
+                        <p>a) É terminantemente proibido o bloqueio da outra parte em quaisquer plataformas digitais, incluindo, mas não se limitando a: WhatsApp, Instagram, Discord, ou qualquer outra rede social ou aplicativo de mensagens existente ou que venha a existir;<br>
+                        b) A parte que descumprir esta determinação ficará sujeita à pena de arrependimento público e retratação formal, além da elaboração de uma carta com, no mínimo, 20 (vinte) linhas explicando as razões pelas quais a amizade é valiosa.</p>
+                        
+                        <h2>Cláusula Décima - Disposições Finais</h2>
+                        <p>10.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.</p>
+                        
+                        <p>10.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.</p>
+                        
+                        <p>10.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.</p>
+                        
+                        <p><strong>REGISTRADO E RECONHECIDO PELO CONSELHO NACIONAL DE AMIZADES VERDADEIRAS</strong><br>
+                        <strong>PROCESSO Nº 2025/0734-9 • SELO DIGITAL: AMZD.2025.004.87534</strong></p>
+                        
+                        <p>E, por estarem assim justas e contratadas, as partes assinam o presente instrumento.</p>
+                        
+                        <p>Porto Alegre, 01 de Agosto de 2025.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="signature-section">
+            <div class="glass-panel">
+                <div class="signature-header">
+                    <h2 class="contract-title">Assinaturas</h2>
+                    <div class="contract-status">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Em andamento</span>
+                    </div>
+                </div>
+                
+                <div class="signatures-container">
+                    <div class="signature-card">
+                        <div class="signature-avatar avatar-mateus">M</div>
+                        <span class="signature-name">Mateus</span>
+                        <span class="signature-role">Melhor Amigo</span>
+                        
+                        <div class="signature-display">
+                            <span class="signature-image" style="font-size: 3rem; font-weight: normal; transform: rotate(-12deg);">Mateu<span style="display: inline-block; position: relative; font-size: 2.5rem; margin-left: -2px; transform: translateY(5px);">s</span><span style="display: inline-block; position: relative; width: 90px; height: 2px; background: var(--primary); margin-left: -30px; transform: translateY(-8px) rotate(2deg); border-radius: 50%; opacity: 0.9; filter: blur(0.3px);"></span></span>
+                        </div>
+                        
+                        <div class="signature-status-badge status-signed">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12L10 17L20 7" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Assinado em 01/08/2025
+                        </div>
+                    </div>
+                    
+                    <div class="signature-card">
+                        <div class="signature-avatar avatar-yasmim">Y</div>
+                        <span class="signature-name">Yasmim</span>
+                        <span class="signature-role">Melhor Amiga</span>
+                        
+                        <div class="signature-display" id="yasmimSignatureDisplay">
+                            <p style="color: rgba(255,255,255,0.4); font-style: italic;">Assinatura pendente</p>
+                        </div>
+                        
+                        <div class="signature-status-badge status-pending">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8V12L15 15" stroke="#ff3e78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="12" r="9" stroke="#ff3e78" stroke-width="2"/>
+                            </svg>
+                            Aguardando assinatura
+                        </div>
+                        
+                        <div class="signing-area">
+                            <div class="signing-options">
+                                <button id="drawOption" class="option-btn active">Desenhar Assinatura</button>
+                                <button id="typeOption" class="option-btn">Digitar Assinatura</button>
+                            </div>
+                            
+                            <canvas id="signatureCanvas"></canvas>
+                            <textarea id="typeSignature" placeholder="Digite sua assinatura..."></textarea>
+                            
+                            <div class="signature-controls">
+                                <button id="clearSignature" class="control-btn btn-clear">Limpar</button>
+                                <button id="signContract" class="control-btn btn-sign">Assinar Contrato</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="finalize-section glass-panel" id="finalizeSection">
+            <div class="finalize-content">
+                <h2 class="contract-title">Finalizar Contrato</h2>
+                
+                <p>Todas as assinaturas foram coletadas. O contrato está pronto para ser finalizado e registrado oficialmente.</p>
+                
+                <div class="official-seal">
+                    <div class="seal-image"></div>
+                    <div class="seal-text">
+                        <strong>Conselho Nacional de Amizades Verdadeiras</strong>
+                        Verificado e Validado Digitalmente<br>
+                        Certificação criptográfica de assinaturas<br>
+                        <span class="process-number">PROCESSO Nº 2025/0734-9</span>
+                    </div>
+                </div>
+                
+                <button id="finalizeContract" class="control-btn btn-finalize">Finalizar e Gerar PDF Oficial</button>
+            </div>
+        </section>
+    </div>
+    
+    <div id="completionMessage">
+        <div class="completion-content">
+            <h1>Contrato Finalizado!</h1>
+            <p>O Contrato de Amizade Perpétua entre Mateus e Yasmim foi oficialmente registrado e autenticado pelo Conselho Nacional de Amizades Verdadeiras.</p>
+            <p>O documento PDF foi gerado com todas as assinaturas, carimbos oficiais e certificações digitais.</p>
+            <h2>Que esta amizade seja eterna! ❤️</h2>
+            <button id="closeMessage" class="control-btn btn-sign" style="margin-top: 30px;">Fechar</button>
+        </div>
+    </div>
+    
+    <canvas id="savedSignatureCanvas" class="saved-signature-canvas"></canvas>
+    
+    <script>
+        const heartsContainer = document.querySelector('.hearts-container');
+        const colors = ['#ff3e78', '#ff84a9', '#4f0fff', '#8661ff'];
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            const size = Math.random() * 20 + 30;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `-${size}px`;
+            
+            const duration = Math.random() * 4 + 4;
+            heart.style.animation = `fall ${duration}s linear forwards`;
+            
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+        
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(0) rotate(0deg) scale(1);
+                }
+                100% {
+                    transform: translateY(${Math.max(window.innerHeight * 2, 2000)}px) rotate(${Math.random() > 0.5 ? '' : '-'}${Math.random() * 360}deg) scale(0.7);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        setInterval(createHeart, 600);
+        
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        const typeSignature = document.getElementById('typeSignature');
+        const drawOption = document.getElementById('drawOption');
+        const typeOption = document.getElementById('typeOption');
+        const clearBtn = document.getElementById('clearSignature');
+        const signBtn = document.getElementById('signContract');
+        const finalizeSection = document.getElementById('finalizeSection');
+        const finalizeBtn = document.getElementById('finalizeContract');
+        const yasmimSignatureDisplay = document.getElementById('yasmimSignatureDisplay');
+        const yasmimStatusBadge = document.querySelector('.signature-status-badge.status-pending');
+        const completionMessage = document.getElementById('completionMessage');
+        const closeMessageBtn = document.getElementById('closeMessage');
+        
+        let isDrawing = false;
+        let signatureMode = 'draw';
+        let signatureComplete = false;
+        let savedSignatureData = null;
+        let savedSignatureType = null;
+        let savedSignatureText = '';
+        
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#ff3e78';
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('touchstart', startDrawingTouch, { passive: false });
+        canvas.addEventListener('touchmove', drawTouch, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function startDrawingTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            
+            isDrawing = true;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+        
+        function drawTouch(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+        }
+        
+        drawOption.addEventListener('click', () => {
+            signatureMode = 'draw';
+            canvas.style.display = 'block';
+            typeSignature.style.display = 'none';
+            drawOption.classList.add('active');
+            typeOption.classList.remove('active');
+        });
+        
+        typeOption.addEventListener('click', () => {
+            signatureMode = 'type';
+            canvas.style.display = 'none';
+            typeSignature.style.display = 'block';
+            drawOption.classList.remove('active');
+            typeOption.classList.add('active');
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            if (signatureMode === 'draw') {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            } else {
+                typeSignature.value = '';
+            }
+        });
+        
+        signBtn.addEventListener('click', () => {
+            let valid = false;
+            let signatureValue = '';
+            
+            if (signatureMode === 'draw') {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                for (let i = 0; i < imageData.length; i += 4) {
+                    if (imageData[i + 3] > 0) {
+                        valid = true;
+                        savedSignatureData = canvas.toDataURL();
+                        savedSignatureType = 'draw';
+                        signatureValue = 'Yasmim';
+                        break;
+                    }
+                }
+            } else {
+                signatureValue = typeSignature.value.trim();
+                valid = signatureValue.length > 0;
+                if (valid) {
+                    savedSignatureType = 'type';
+                    savedSignatureText = signatureValue;
+                }
+            }
+            
+            if (valid) {
+                yasmimSignatureDisplay.innerHTML = '';
+                
+                if (signatureMode === 'draw' && savedSignatureData) {
+                    const img = document.createElement('img');
+                    img.src = savedSignatureData;
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    yasmimSignatureDisplay.appendChild(img);
+                } else {
+                    const signatureElement = document.createElement('span');
+                    signatureElement.classList.add('signature-image');
+                    signatureElement.textContent = signatureValue;
+                    signatureElement.style.transform = 'rotate(-7deg)';
+                    yasmimSignatureDisplay.appendChild(signatureElement);
+                }
+                
+                yasmimStatusBadge.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12L10 17L20 7" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Assinado agora
+                `;
+                yasmimStatusBadge.classList.remove('status-pending');
+                yasmimStatusBadge.classList.add('status-signed');
+                
+                document.querySelector('.signing-area').style.display = 'none';
+                
+                finalizeSection.style.display = 'block';
+                
+                document.querySelector('.contract-status .status-text').textContent = 'Pronto para finalização';
+                
+                signatureComplete = true;
+                
+                setTimeout(() => {
+                    finalizeSection.scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+            } else {
+                alert('Por favor, adicione sua assinatura antes de continuar.');
+            }
+        });
+        
+        finalizeBtn.addEventListener('click', async () => {
+            if (signatureComplete) {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'mm', 'a4');
+                    
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    const margin = 15;
+                    const lineHeight = 5;
+                    let yPosition = margin;
+                    let currentPage = 1;
+                    
+                    function checkPageBreak(requiredSpace) {
+                        if (yPosition + requiredSpace > pageHeight - margin - 10) {
+                            doc.addPage();
+                            currentPage++;
+                            yPosition = margin;
+                            addPageHeader();
+                        }
+                    }
+                    
+                    function addPageHeader() {
+                        doc.setFillColor(255, 62, 120);
+                        doc.rect(0, 0, pageWidth, 3, 'F');
+                        doc.setFillColor(79, 15, 255);
+                        doc.rect(0, 3, pageWidth, 2, 'F');
+                        yPosition = 15;
+                    }
+                    
+                    doc.setFillColor(240, 240, 250);
+                    doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                    
+                    addPageHeader();
+                    
+                    yPosition = 25;
+                    
+                    doc.setTextColor(255, 62, 120);
+                    doc.setFontSize(20);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('CONTRATO DE AMIZADE PERPÉTUA', pageWidth / 2, yPosition, { align: 'center' });
+                    
+                    yPosition += 8;
+                    doc.setFontSize(12);
+                    doc.setTextColor(79, 15, 255);
+                    doc.text('Assinatura Digital Oficial', pageWidth / 2, yPosition, { align: 'center' });
+                    
+                    yPosition += 15;
+                    
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('INSTRUMENTO PARTICULAR DE COMPROMISSO DE MELHOR AMIZADE', pageWidth / 2, yPosition, { align: 'center' });
+                    yPosition += lineHeight;
+                    doc.setFontSize(9);
+                    doc.text('CONFORME A LEI FEDERAL Nº 4.287/25 DE VÍNCULOS AFETIVOS INDISSOLÚVEIS', pageWidth / 2, yPosition, { align: 'center' });
+                    
+                    yPosition += 12;
+                    
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(9);
+                    
+                    const contractSections = [
+                        {
+                            title: '',
+                            content: 'Pelo presente instrumento particular, regido pela Lei da Amizade Verdadeira (Lei Federal nº 4.287/25) e pelo Código Civil Brasileiro em seus artigos que dispõem sobre relações interpessoais não-familiares (Art. 927-A ao 927-Z, incluídos pela Lei Complementar nº 183/24), as partes abaixo qualificadas firmam entre si o presente CONTRATO DE AMIZADE PERPÉTUA E IRREVOGÁVEL, mediante as seguintes cláusulas e condições:'
+                        },
+                        {
+                            title: 'PARTES CONTRATANTES',
+                            content: 'PARTE PRIMEIRA: MATEUS, doravante denominado MELHOR AMIGO, pessoa natural dotada de plena capacidade afetiva conforme Art. 3º da Lei de Vínculos Emocionais.\n\nPARTE SEGUNDA: YASMIM, doravante denominada MELHOR AMIGA, igualmente dotada de plena capacidade afetiva conforme mesma legislação supracitada.'
+                        },
+                        {
+                            title: 'CONSIDERANDOS',
+                            content: 'CONSIDERANDO que as partes, por livre e espontânea vontade, reconhecem o valor inestimável da amizade entre si;\n\nCONSIDERANDO que o Instituto Brasileiro de Relações Interpessoais (IBRI) reconhece como vínculo de amizade verdadeira aquele que perdura por mais de 100 (cem) dias consecutivos;\n\nCONSIDERANDO a necessidade de formalização do vínculo afetivo para garantia das obrigações recíprocas;\n\nAs partes RESOLVEM celebrar o presente CONTRATO DE AMIZADE PERPÉTUA, mediante as seguintes cláusulas e condições:'
+                        },
+                        {
+                            title: 'CLÁUSULA PRIMEIRA - DO OBJETO',
+                            content: '1.1. O presente contrato tem por objeto a formalização e eternização do vínculo de amizade entre as partes contratantes, com estabelecimento de direitos e deveres recíprocos, conforme Art. 14 da Lei Federal nº 4.287/25.\n\n1.2. A amizade ora formalizada é classificada como "MELHOR AMIZADE DE GRAU MÁXIMO", nos termos do Art. 17, §3º da referida lei, sendo considerada perpétua e irrevogável.'
+                        },
+                        {
+                            title: 'CLÁUSULA SEGUNDA - DOS PRINCÍPIOS FUNDAMENTAIS',
+                            content: '2.1. São princípios basilares do presente contrato, conforme a Resolução nº 42/2024 do Conselho Nacional de Amizades Verdadeiras:\na) Lealdade absoluta;\nb) Confidencialidade plena;\nc) Suporte emocional incondicional;\nd) Honestidade temperada com tato;\ne) Disponibilidade prioritária;\nf) Reciprocidade afetiva.'
+                        },
+                        {
+                            title: 'CLÁUSULA TERCEIRA - DAS OBRIGAÇÕES RECÍPROCAS',
+                            content: '3.1. OBRIGAÇÕES DE PERMANÊNCIA DO VÍNCULO: Ambas as partes comprometem-se a manter o vínculo de amizade de forma perpétua e irrevogável, conforme Art. 23 da Lei Federal nº 4.287/25, não podendo jamais declarar o término da amizade, sob qualquer circunstância, salvo nas hipóteses previstas no Art. 31-A da mesma lei (traição de confiança com dolo específico).\n\n3.2. OBRIGAÇÕES AFETIVAS: As partes se comprometem a nutrir sentimentos positivos uma pela outra, incluindo, mas não se limitando a:\na) Amor platônico na modalidade amizade;\nb) Admiração genuína;\nc) Empatia proativa;\nd) Tolerância às peculiaridades de personalidade.\n\n3.3. OBRIGAÇÕES DE PROTEÇÃO: Cada parte obriga-se a proteger a outra em todas as circunstâncias, incluindo:\na) Defesa da honra e da imagem perante terceiros;\nb) Intervenção em situações de perigo iminente;\nc) Acolhimento em momentos de vulnerabilidade emocional;\nd) Orientação preventiva sobre riscos potenciais.\n\n3.8. OBRIGAÇÕES DE COMUNICAÇÃO AFETIVA: Conforme disposto na Portaria nº 28/2025 do Ministério das Relações Interpessoais:\na) Ambas as partes devem manter o mesmo nível de carinho e atenção tanto em comunicações por mensagem escrita quanto em comunicações por voz;\nb) É vedada a demonstração diferenciada de afeto baseada no meio de comunicação utilizado;\nc) Toda forma de comunicação deve ser marcada por expressões genuínas de apreço e consideração.\n\n3.9. OBRIGAÇÕES DE RECIPROCIDADE EM CHAMADAS: Em conformidade com o Artigo 89-B da Lei de Comunicações Interpessoais:\na) Ambas as partes devem solicitar chamadas de voz e/ou vídeo de forma equilibrada;\nb) É expressamente proibido que apenas uma das partes seja sempre a responsável por iniciar os pedidos de chamadas;\nc) As solicitações de chamadas devem ocorrer em intervalo máximo de 7 (sete) dias por cada uma das partes, salvo impedimentos justificáveis.\n\n3.10. RESTRIÇÕES TEMPORAIS AO BULLYING AMIGÁVEL: Em conformidade com a Diretriz de Proteção ao Bem-Estar Emocional nº 47/2024:\na) Fica terminantemente proibida qualquer forma de bullying, provocação, ou expressões jocosas que possam ser interpretadas como depreciativas após as 18:00 horas;\nb) Após o horário estipulado na alínea anterior, a comunicação deve restringir-se exclusivamente a elogios, palavras de incentivo e manifestações positivas de afeto;\nc) O descumprimento desta cláusula implica na obrigação de proferir 5 (cinco) elogios consecutivos como medida compensatória imediata.'
+                        },
+                        {
+                            title: 'CLÁUSULA NONA - DOS COMPROMISSOS ESPECIAIS',
+                            content: '9.1. OBRIGAÇÃO DE ENCONTRO PRESENCIAL: Em conformidade com o Art. 115 da Lei de Proximidade Afetiva:\na) As partes comprometem-se a realizar ao menos um encontro presencial no prazo máximo de 3 (três) anos a contar da data de assinatura deste contrato;\nb) O não cumprimento desta cláusula implicará em multa afetiva, na forma de realização de 5 (cinco) gestos extraordinários de amizade à escolha da parte prejudicada;\nc) Circunstâncias de força maior, devidamente comprovadas, poderão estender o prazo em até 6 (seis) meses adicionais.\n\n9.2. PROIBIÇÃO DE INTERFERÊNCIA DE TERCEIROS: Conforme a Resolução nº 73/2024 do Conselho Nacional de Amizades Verdadeiras:\na) Em caso de início de relacionamento amoroso por qualquer das partes, havendo qualquer objeção do(a) parceiro(a) romântico(a) em relação à amizade objeto deste contrato, a parte envolvida no relacionamento amoroso fica obrigada a:\ni. Comunicar imediatamente à outra parte contratante sobre a situação;\nii. Promover diálogo franco e aberto sobre o ocorrido;\niii. Buscar soluções que preservem a integridade da amizade;\niv. Não permitir alterações súbitas ou injustificadas no padrão de interação da amizade.\n\n9.3. VEDAÇÃO ABSOLUTA DE BLOQUEIO DIGITAL: Em conformidade com o Art. 147-A do Código de Conduta Digital entre Amigos:\na) É terminantemente proibido o bloqueio da outra parte em quaisquer plataformas digitais, incluindo, mas não se limitando a: WhatsApp, Instagram, Discord, ou qualquer outra rede social ou aplicativo de mensagens existente ou que venha a existir;\nb) A parte que descumprir esta determinação ficará sujeita à pena de arrependimento público e retratação formal, além da elaboração de uma carta com, no mínimo, 20 (vinte) linhas explicando as razões pelas quais a amizade é valiosa.'
+                        },
+                        {
+                            title: 'CLÁUSULA DÉCIMA - DISPOSIÇÕES FINAIS',
+                            content: '10.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.\n\n10.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.\n\n10.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.\n\nREGISTRADO E RECONHECIDO PELO CONSELHO NACIONAL DE AMIZADES VERDADEIRAS\nPROCESSO Nº 2025/0734-9 • SELO DIGITAL: AMZD.2025.004.87534\n\nE, por estarem assim justas e contratadas, as partes assinam o presente instrumento.\n\nPorto Alegre, 01 de Agosto de 2025.'
+                        }
+                    ];
+                    
+                    contractSections.forEach(section => {
+                        if (section.title) {
+                            checkPageBreak(15);
+                            doc.setFont('helvetica', 'bold');
+                            doc.setFontSize(10);
+                            doc.setTextColor(79, 15, 255);
+                            doc.text(section.title, margin, yPosition);
+                            yPosition += lineHeight + 2;
+                        }
+                        
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(9);
+                        doc.setTextColor(0, 0, 0);
+                        
+                        const lines = doc.splitTextToSize(section.content, pageWidth - 2 * margin);
+                        lines.forEach(line => {
+                            checkPageBreak(lineHeight);
+                            doc.text(line, margin, yPosition);
+                            yPosition += lineHeight;
+                        });
+                        
+                        yPosition += 5;
+                    });
+                    
+                    checkPageBreak(80);
+                    
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(margin, yPosition, pageWidth - margin, yPosition);
+                    yPosition += 10;
+                    
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(255, 62, 120);
+                    doc.text('ASSINATURAS', pageWidth / 2, yPosition, { align: 'center' });
+                    yPosition += 15;
+                    
+                    const signatureY = yPosition;
+                    const signatureWidth = 70;
+                    const signatureHeight = 30;
+                    
+                    doc.setDrawColor(255, 62, 120);
+                    doc.setLineWidth(0.5);
+                    doc.rect(margin, signatureY, signatureWidth, signatureHeight);
+                    doc.rect(pageWidth - margin - signatureWidth, signatureY, signatureWidth, signatureHeight);
+                    
+                    doc.setFontSize(9);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('MATEUS', margin + signatureWidth/2, signatureY - 5, { align: 'center' });
+                    doc.text('YASMIM', pageWidth - margin - signatureWidth/2, signatureY - 5, { align: 'center' });
+                    
+                    doc.setTextColor(255, 62, 120);
+                    doc.setFontSize(14);
+                    doc.setFont('times', 'italic');
+                    doc.text('Mateus', margin + signatureWidth/2, signatureY + signatureHeight/2, { align: 'center' });
+                    
+                    if (savedSignatureType === 'draw' && savedSignatureData) {
+                        doc.addImage(savedSignatureData, 'PNG', pageWidth - margin - signatureWidth + 5, signatureY + 5, signatureWidth - 10, signatureHeight - 10);
+                    } else if (savedSignatureType === 'type' && savedSignatureText) {
+                        doc.text(savedSignatureText, pageWidth - margin - signatureWidth/2, signatureY + signatureHeight/2, { align: 'center' });
+                    }
+                    
+                    doc.setFontSize(8);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(0, 128, 0);
+                    doc.text('✓ Assinado em 01/08/2025', margin, signatureY + signatureHeight + 5);
+                    doc.text('✓ Assinado digitalmente', pageWidth - margin - signatureWidth, signatureY + signatureHeight + 5);
+                    
+                    yPosition = signatureY + signatureHeight + 25;
+                    
+                    checkPageBreak(70);
+                    
+                    const sealSize = 35;
+                    const sealX = pageWidth / 2 - sealSize / 2;
+                    
+                    doc.setDrawColor(255, 62, 120);
+                    doc.setLineWidth(1);
+                    doc.circle(pageWidth / 2, yPosition + sealSize/2, sealSize/2);
+                    
+                    doc.setDrawColor(79, 15, 255);
+                    doc.setLineWidth(0.5);
+                    doc.circle(pageWidth / 2, yPosition + sealSize/2, sealSize/2 - 5);
+                    
+                    doc.setFontSize(7);
+                    doc.setTextColor(79, 15, 255);
+                    doc.text('CONSELHO', pageWidth / 2, yPosition + sealSize/2 - 5, { align: 'center' });
+                    doc.text('NACIONAL DE', pageWidth / 2, yPosition + sealSize/2, { align: 'center' });
+                    doc.text('AMIZADES', pageWidth / 2, yPosition + sealSize/2 + 5, { align: 'center' });
+                    doc.text('VERDADEIRAS', pageWidth / 2, yPosition + sealSize/2 + 10, { align: 'center' });
+                    
+                    yPosition += sealSize + 10;
+                    
+                    doc.setFontSize(8);
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('CERTIFICAÇÃO DIGITAL', pageWidth / 2, yPosition, { align: 'center' });
+                    yPosition += lineHeight;
+                    doc.setFont('helvetica', 'normal');
+                    doc.text('Processo Nº 2025/0734-9 • Selo Digital: AMZD.2025.004.87534', pageWidth / 2, yPosition, { align: 'center' });
+                    yPosition += lineHeight;
+                    doc.text('Documento validado eletronicamente', pageWidth / 2, yPosition, { align: 'center' });
+                    
+                    for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
+                        doc.setPage(i);
+                        doc.setFillColor(79, 15, 255);
+                        doc.rect(0, pageHeight - 5, pageWidth, 3, 'F');
+                        doc.setFillColor(255, 62, 120);
+                        doc.rect(0, pageHeight - 2, pageWidth, 2, 'F');
+                        
+                        doc.setFontSize(8);
+                        doc.setTextColor(150, 150, 150);
+                        doc.text(`Página ${i} de ${doc.internal.getNumberOfPages()}`, pageWidth / 2, pageHeight - 8, { align: 'center' });
+                    }
+                    
+                    doc.save('Contrato_Amizade_Perpetua_Mateus_Yasmim.pdf');
+                    
+                    completionMessage.style.display = 'flex';
+                    createConfetti();
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    alert('Houve um erro ao gerar o PDF. Por favor, tente novamente.');
+                }
+            }
+        });
+        
+        closeMessageBtn.addEventListener('click', () => {
+            completionMessage.style.display = 'none';
+        });
+        
+        function createConfetti() {
+            const confettiColors = ['#ff3e78', '#ff84a9', '#4f0fff', '#8661ff', '#00ff88'];
+            const confettiContainer = document.body;
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                
+                confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                confetti.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                confetti.style.position = 'fixed';
+                confetti.style.top = '-10px';
+                confetti.style.left = `${Math.random() * 100}%`;
+                
+                const rotation = Math.random() * 360;
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 3;
+                
+                confetti.style.transform = `rotate(${rotation}deg)`;
+                confetti.style.animation = `confettiFall ${duration}s ease-in ${delay}s forwards`;
+                
+                confettiContainer.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, (duration + delay) * 1000);
+            }
+            
+            const confettiStyle = document.createElement('style');
+            confettiStyle.innerHTML = `
+                @keyframes confettiFall {
+                    0% {
+                        transform: translateY(0) rotate(0deg);
+                    }
+                    100% {
+                        transform: translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 720}deg);
+                    }
+                }
+            `;
+            document.head.appendChild(confettiStyle);
+        }
+    </script>
+</body>
+</html>

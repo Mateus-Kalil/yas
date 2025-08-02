@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrato de Amizade Perpétua</title>
-
-    <link rel="icon" href="favicon.png" type="image/x-icon" />
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
-    
+    <title>Contrato de Amizade Perpétua - Assinatura Digital</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -307,14 +303,16 @@
             color: white;
             position: relative;
             margin-bottom: 10px;
+            background-size: cover;
+            background-position: center;
         }
         
         .avatar-mateus {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-image: url('Mateus.png');
         }
         
         .avatar-yasmim {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            background-image: url('Yasmim.png');
         }
         
         .signature-name {
@@ -750,12 +748,19 @@
                         <p>a) É terminantemente proibido o bloqueio da outra parte em quaisquer plataformas digitais, incluindo, mas não se limitando a: WhatsApp, Instagram, Discord, ou qualquer outra rede social ou aplicativo de mensagens existente ou que venha a existir;<br>
                         b) A parte que descumprir esta determinação ficará sujeita à pena de arrependimento público e retratação formal, além da elaboração de uma carta com, no mínimo, 20 (vinte) linhas explicando as razões pelas quais a amizade é valiosa.</p>
                         
-                        <h2>Cláusula Décima - Disposições Finais</h2>
-                        <p>10.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.</p>
+                        <h2>Cláusula Décima - Compromisso Futuro de União</h2>
+                        <p>10.1. <strong>COMPROMISSO MATRIMONIAL CONDICIONAL:</strong> Em conformidade com a Lei de Cláusulas Especiais de Compromisso Afetivo nº 87/2024:</p>
+                        <p>a) Se até o ano de 2030, nenhuma das partes tiver contraído matrimônio com terceiros, as partes comprometem-se, de maneira obrigatória e irrevogável, a unirem-se em matrimônio uma com a outra;<br>
+                        b) O matrimônio referido na alínea anterior deverá ser realizado em cerimônia oficial, com as formalidades legais pertinentes;<br>
+                        c) Após a realização do matrimônio, as partes comprometem-se a constituir família, nos termos da legislação vigente;<br>
+                        d) Este compromisso matrimonial condicional é parte integrante e indissociável do presente contrato, não podendo ser objeto de renúncia unilateral.</p>
                         
-                        <p>10.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.</p>
+                        <h2>Cláusula Décima Primeira - Disposições Finais</h2>
+                        <p>11.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.</p>
                         
-                        <p>10.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.</p>
+                        <p>11.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.</p>
+                        
+                        <p>11.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.</p>
                         
                         <p><strong>REGISTRADO E RECONHECIDO PELO CONSELHO NACIONAL DE AMIZADES VERDADEIRAS</strong><br>
                         <strong>PROCESSO Nº 2025/0734-9 • SELO DIGITAL: AMZD.2025.004.87534</strong></p>
@@ -780,7 +785,7 @@
                 
                 <div class="signatures-container">
                     <div class="signature-card">
-                        <div class="signature-avatar avatar-mateus">M</div>
+                        <div class="signature-avatar avatar-mateus"></div>
                         <span class="signature-name">Mateus</span>
                         <span class="signature-role">Melhor Amigo</span>
                         
@@ -797,7 +802,7 @@
                     </div>
                     
                     <div class="signature-card">
-                        <div class="signature-avatar avatar-yasmim">Y</div>
+                        <div class="signature-avatar avatar-yasmim"></div>
                         <span class="signature-name">Yasmim</span>
                         <span class="signature-role">Melhor Amiga</span>
                         
@@ -1105,10 +1110,16 @@
                     }
                     
                     function addPageHeader() {
-                        doc.setFillColor(255, 62, 120);
-                        doc.rect(0, 0, pageWidth, 3, 'F');
-                        doc.setFillColor(79, 15, 255);
-                        doc.rect(0, 3, pageWidth, 2, 'F');
+                        const gradient = doc.setFillColor(new doc.GradientPattern(0, 0, pageWidth, 5, function(x, y, w, h) {
+                            this.rect(0, 0, pageWidth, 5);
+                            const grd = this.ctx.createLinearGradient(0, 0, pageWidth, 0);
+                            grd.addColorStop(0, '#4f0fff');
+                            grd.addColorStop(1, '#ff3e78');
+                            this.ctx.fillStyle = grd;
+                            this.ctx.fill();
+                        }));
+                        
+                        doc.rect(0, 0, pageWidth, 5, 'F');
                         yPosition = 15;
                     }
                     
@@ -1119,14 +1130,14 @@
                     
                     yPosition = 25;
                     
-                    doc.setTextColor(255, 62, 120);
+                    doc.setTextColor(79, 15, 255);
                     doc.setFontSize(20);
                     doc.setFont('helvetica', 'bold');
                     doc.text('CONTRATO DE AMIZADE PERPÉTUA', pageWidth / 2, yPosition, { align: 'center' });
                     
                     yPosition += 8;
                     doc.setFontSize(12);
-                    doc.setTextColor(79, 15, 255);
+                    doc.setTextColor(255, 62, 120);
                     doc.text('Assinatura Digital Oficial', pageWidth / 2, yPosition, { align: 'center' });
                     
                     yPosition += 15;
@@ -1174,8 +1185,12 @@
                             content: '9.1. OBRIGAÇÃO DE ENCONTRO PRESENCIAL: Em conformidade com o Art. 115 da Lei de Proximidade Afetiva:\na) As partes comprometem-se a realizar ao menos um encontro presencial no prazo máximo de 3 (três) anos a contar da data de assinatura deste contrato;\nb) O não cumprimento desta cláusula implicará em multa afetiva, na forma de realização de 5 (cinco) gestos extraordinários de amizade à escolha da parte prejudicada;\nc) Circunstâncias de força maior, devidamente comprovadas, poderão estender o prazo em até 6 (seis) meses adicionais.\n\n9.2. PROIBIÇÃO DE INTERFERÊNCIA DE TERCEIROS: Conforme a Resolução nº 73/2024 do Conselho Nacional de Amizades Verdadeiras:\na) Em caso de início de relacionamento amoroso por qualquer das partes, havendo qualquer objeção do(a) parceiro(a) romântico(a) em relação à amizade objeto deste contrato, a parte envolvida no relacionamento amoroso fica obrigada a:\ni. Comunicar imediatamente à outra parte contratante sobre a situação;\nii. Promover diálogo franco e aberto sobre o ocorrido;\niii. Buscar soluções que preservem a integridade da amizade;\niv. Não permitir alterações súbitas ou injustificadas no padrão de interação da amizade.\n\n9.3. VEDAÇÃO ABSOLUTA DE BLOQUEIO DIGITAL: Em conformidade com o Art. 147-A do Código de Conduta Digital entre Amigos:\na) É terminantemente proibido o bloqueio da outra parte em quaisquer plataformas digitais, incluindo, mas não se limitando a: WhatsApp, Instagram, Discord, ou qualquer outra rede social ou aplicativo de mensagens existente ou que venha a existir;\nb) A parte que descumprir esta determinação ficará sujeita à pena de arrependimento público e retratação formal, além da elaboração de uma carta com, no mínimo, 20 (vinte) linhas explicando as razões pelas quais a amizade é valiosa.'
                         },
                         {
-                            title: 'CLÁUSULA DÉCIMA - DISPOSIÇÕES FINAIS',
-                            content: '10.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.\n\n10.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.\n\n10.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.\n\nREGISTRADO E RECONHECIDO PELO CONSELHO NACIONAL DE AMIZADES VERDADEIRAS\nPROCESSO Nº 2025/0734-9 • SELO DIGITAL: AMZD.2025.004.87534\n\nE, por estarem assim justas e contratadas, as partes assinam o presente instrumento.\n\nPorto Alegre, 01 de Agosto de 2025.'
+                            title: 'CLÁUSULA DÉCIMA - COMPROMISSO FUTURO DE UNIÃO',
+                            content: '10.1. COMPROMISSO MATRIMONIAL CONDICIONAL: Em conformidade com a Lei de Cláusulas Especiais de Compromisso Afetivo nº 87/2024:\na) Se até o ano de 2030, nenhuma das partes tiver contraído matrimônio com terceiros, as partes comprometem-se, de maneira obrigatória e irrevogável, a unirem-se em matrimônio uma com a outra;\nb) O matrimônio referido na alínea anterior deverá ser realizado em cerimônia oficial, com as formalidades legais pertinentes;\nc) Após a realização do matrimônio, as partes comprometem-se a constituir família, nos termos da legislação vigente;\nd) Este compromisso matrimonial condicional é parte integrante e indissociável do presente contrato, não podendo ser objeto de renúncia unilateral.'
+                        },
+                        {
+                            title: 'CLÁUSULA DÉCIMA PRIMEIRA - DISPOSIÇÕES FINAIS',
+                            content: '11.1. As partes elegem o foro afetivo de seus corações para dirimir quaisquer controvérsias oriundas do presente contrato, com renúncia expressa a qualquer outro, por mais privilegiado que seja.\n\n11.2. O presente contrato é firmado em 02 (duas) vias de igual teor e forma, na presença de 02 (duas) testemunhas que também o assinam.\n\n11.3. Este contrato está registrado no Cartório de Amizades Verdadeiras sob o nº 2025/XPTO.\n\nREGISTRADO E RECONHECIDO PELO CONSELHO NACIONAL DE AMIZADES VERDADEIRAS\nPROCESSO Nº 2025/0734-9 • SELO DIGITAL: AMZD.2025.004.87534\n\nE, por estarem assim justas e contratadas, as partes assinam o presente instrumento.\n\nPorto Alegre, 01 de Agosto de 2025.'
                         }
                     ];
                     
@@ -1211,7 +1226,7 @@
                     
                     doc.setFontSize(12);
                     doc.setFont('helvetica', 'bold');
-                    doc.setTextColor(255, 62, 120);
+                    doc.setTextColor(79, 15, 255);
                     doc.text('ASSINATURAS', pageWidth / 2, yPosition, { align: 'center' });
                     yPosition += 15;
                     
@@ -1219,7 +1234,7 @@
                     const signatureWidth = 70;
                     const signatureHeight = 30;
                     
-                    doc.setDrawColor(255, 62, 120);
+                    doc.setDrawColor(79, 15, 255);
                     doc.setLineWidth(0.5);
                     doc.rect(margin, signatureY, signatureWidth, signatureHeight);
                     doc.rect(pageWidth - margin - signatureWidth, signatureY, signatureWidth, signatureHeight);
@@ -1229,7 +1244,7 @@
                     doc.text('MATEUS', margin + signatureWidth/2, signatureY - 5, { align: 'center' });
                     doc.text('YASMIM', pageWidth - margin - signatureWidth/2, signatureY - 5, { align: 'center' });
                     
-                    doc.setTextColor(255, 62, 120);
+                    doc.setTextColor(79, 15, 255);
                     doc.setFontSize(14);
                     doc.setFont('times', 'italic');
                     doc.text('Mateus', margin + signatureWidth/2, signatureY + signatureHeight/2, { align: 'center' });
@@ -1253,11 +1268,11 @@
                     const sealSize = 35;
                     const sealX = pageWidth / 2 - sealSize / 2;
                     
-                    doc.setDrawColor(255, 62, 120);
+                    doc.setDrawColor(79, 15, 255);
                     doc.setLineWidth(1);
                     doc.circle(pageWidth / 2, yPosition + sealSize/2, sealSize/2);
                     
-                    doc.setDrawColor(79, 15, 255);
+                    doc.setDrawColor(255, 62, 120);
                     doc.setLineWidth(0.5);
                     doc.circle(pageWidth / 2, yPosition + sealSize/2, sealSize/2 - 5);
                     
@@ -1282,9 +1297,11 @@
                     
                     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
                         doc.setPage(i);
-                        doc.setFillColor(79, 15, 255);
+                        
+                        const grd = doc.setFillColor('#4f0fff');
                         doc.rect(0, pageHeight - 5, pageWidth, 3, 'F');
-                        doc.setFillColor(255, 62, 120);
+                        
+                        doc.setFillColor('#ff3e78');
                         doc.rect(0, pageHeight - 2, pageWidth, 2, 'F');
                         
                         doc.setFontSize(8);

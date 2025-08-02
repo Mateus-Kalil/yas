@@ -1110,17 +1110,35 @@
                     }
                     
                     function addPageHeader() {
-                        const gradient = doc.setFillColor(new doc.GradientPattern(0, 0, pageWidth, 5, function(x, y, w, h) {
-                            this.rect(0, 0, pageWidth, 5);
-                            const grd = this.ctx.createLinearGradient(0, 0, pageWidth, 0);
-                            grd.addColorStop(0, '#4f0fff');
-                            grd.addColorStop(1, '#ff3e78');
-                            this.ctx.fillStyle = grd;
-                            this.ctx.fill();
-                        }));
+                        // Criar efeito de degradê com múltiplos retângulos
+                        const segments = 20;
+                        const segmentWidth = pageWidth / segments;
                         
-                        doc.rect(0, 0, pageWidth, 5, 'F');
+                        for (let i = 0; i < segments; i++) {
+                            // Calcular a proporção de roxo para rosa com base na posição
+                            const ratio = i / segments;
+                            
+                            // Cores de início (roxo) e fim (rosa)
+                            const r1 = 79, g1 = 15, b1 = 255;  // #4f0fff - roxo
+                            const r2 = 255, g2 = 62, b2 = 120; // #ff3e78 - rosa
+                            
+                            // Interpolar entre as cores
+                            const r = Math.floor(r1 + (r2 - r1) * ratio);
+                            const g = Math.floor(g1 + (g2 - g1) * ratio);
+                            const b = Math.floor(b1 + (b2 - b1) * ratio);
+                            
+                            // Converter para cor hexadecimal
+                            const color = rgbToHex(r, g, b);
+                            
+                            doc.setFillColor(color);
+                            doc.rect(i * segmentWidth, 0, segmentWidth, 5, 'F');
+                        }
+                        
                         yPosition = 15;
+                    }
+                    
+                    function rgbToHex(r, g, b) {
+                        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
                     }
                     
                     doc.setFillColor(240, 240, 250);
@@ -1298,11 +1316,29 @@
                     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
                         doc.setPage(i);
                         
-                        const grd = doc.setFillColor('#4f0fff');
-                        doc.rect(0, pageHeight - 5, pageWidth, 3, 'F');
+                        // Criar efeito de degradê no rodapé com múltiplos retângulos
+                        const segments = 20;
+                        const segmentWidth = pageWidth / segments;
                         
-                        doc.setFillColor('#ff3e78');
-                        doc.rect(0, pageHeight - 2, pageWidth, 2, 'F');
+                        for (let j = 0; j < segments; j++) {
+                            // Calcular a proporção de roxo para rosa com base na posição
+                            const ratio = j / segments;
+                            
+                            // Cores de início (roxo) e fim (rosa)
+                            const r1 = 79, g1 = 15, b1 = 255;  // #4f0fff - roxo
+                            const r2 = 255, g2 = 62, b2 = 120; // #ff3e78 - rosa
+                            
+                            // Interpolar entre as cores
+                            const r = Math.floor(r1 + (r2 - r1) * ratio);
+                            const g = Math.floor(g1 + (g2 - g1) * ratio);
+                            const b = Math.floor(b1 + (b2 - b1) * ratio);
+                            
+                            // Converter para cor hexadecimal
+                            const color = rgbToHex(r, g, b);
+                            
+                            doc.setFillColor(color);
+                            doc.rect(j * segmentWidth, pageHeight - 5, segmentWidth, 5, 'F');
+                        }
                         
                         doc.setFontSize(8);
                         doc.setTextColor(150, 150, 150);
